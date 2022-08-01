@@ -1,14 +1,18 @@
-function D = Distance(citys)
-%% ¼ÆËãÁ½Á½³ÇÊĞÖ®¼äµÄ¾àÀë
-% ÊäÈë:¸÷³ÇÊĞµÄÎ»ÖÃ×ø±ê(citys)
-% Êä³ö:Á½Á½³ÇÊĞÖ®¼äµÄ¾àÀë(D)
- 
-n = size(citys, 1);
-D = zeros(n, n);
-for i = 1: n
-    for j = i + 1: n
-            D(i, j) = sqrt((citys(i, 1) - citys(j, 1))^2 + (citys(i, 2) - citys(j, 2))^2);
-            D(j, i) = D(i, j);
+function D=Distance(citys)
+%% è®¡ç®—ä¸¤ä¸¤åŸå¸‚çš„ä½ç½®åæ ‡
+% è¾“å…¥:å„åŸå¸‚çš„ä½ç½®åæ ‡
+% è¾“å‡º:ä¸¤ä¸¤åŸå¸‚ä¹‹é—´çš„è·ç¦»
+
+n=size(citys,1);
+D=zeros(n,n);
+for i=1:n
+    for j=i+1:n
+        D(i,j)=sqrt((citys(i,1)-citys(j,1))^2+(citys(i,2)-citys(j,2))^2);
+        D(j,i)=D(i,j);
     end
-    D(i, i) = 1e-4;              %¶Ô½ÇÏßµÄÖµÎª0£¬µ«ÓÉÓÚºóÃæµÄÆô·¢Òò×ÓÒªÈ¡µ¹Êı£¬Òò´ËÓÃÒ»¸öºÜĞ¡Êı´úÌæ0
+    D(i,i)=eps;
 end
+
+
+
+

@@ -1,21 +1,21 @@
-%% I. Çå¿Õ»·¾³
+%% I. æ¸…ç©ºçŽ¯å¢ƒ
 clc
-clear all
-%% II. ·ûºÅËµÃ÷
-% C                         -- n¸ö³ÇÊÐµÄ×ø±ê
-% NC_max                    -- ×î´óµü´ú´ÎÊý
-% m                         -- ÒÏÈºÖÐÂìÒÏµÄÊýÁ¿£¬Ò»°ãÉèÖÃÎª³ÇÊÐµÄ1.5±¶
-% D(i, j)                   -- Á½³ÇÊÐiºÍÖ®¼äµÄ¾àÀë
-% Eta(i, j) = 1 ./ D(i, j)  -- Æô·¢º¯Êý
-% alpha                     -- ±íÕ÷ÐÅÏ¢ËØÖØÒª³Ì¶ÈµÄ²ÎÊý
-% beta                      -- ±íÕ÷Æô·¢º¯ÊýÖØÒª³Ì¶ÈµÄ²ÎÊý
-% rho                       -- ÐÅÏ¢ËØ»Ó·¢Òò×Ó
+clear all;
+%% II. ç¬¦å·è¯´æ˜Ž
+% C                         -- nä¸ªåŸŽå¸‚çš„åæ ‡
+% NC_max                    -- æœ€å¤§è¿­ä»£æ¬¡æ•°
+% m                         -- èšç¾¤ä¸­èš‚èšçš„æ•°é‡ï¼Œä¸€èˆ¬è®¾ç½®ä¸ºåŸŽå¸‚çš„1.5å€
+% D(i, j)                   -- ä¸¤åŸŽå¸‚iå’Œä¹‹é—´çš„è·ç¦»
+% Eta(i, j) = 1 ./ D(i, j)  -- å¯å‘å‡½æ•°
+% alpha                     -- è¡¨å¾ä¿¡æ¯ç´ é‡è¦ç¨‹åº¦çš„å‚æ•°
+% beta                      -- è¡¨å¾å¯å‘å‡½æ•°é‡è¦ç¨‹åº¦çš„å‚æ•°
+% rho                       -- ä¿¡æ¯ç´ æŒ¥å‘å› å­
 % Q                         --
-% rBest                     -- ¸÷´ú×î¼ÑµÄÂ·Ïß
-% lBest                     -- ¸÷´ú×î¼ÑÂ·ÏßµÄ³¤¶È
-% lAverage                  --¸÷´úµÄÆ½¾ù³¤¶È
+% rBest                     -- å„ä»£æœ€ä½³çš„è·¯çº¿
+% lBest                     -- å„ä»£æœ€ä½³è·¯çº¿çš„é•¿åº¦
+% lAverage                  --å„ä»£çš„å¹³å‡é•¿åº¦
  
-%% III. µ¼Èë³ÇÊÐÎ»ÖÃÊý¾Ý
+%% III. å¯¼å…¥åŸŽå¸‚ä½ç½®æ•°æ®
 citys = [18.4700   95.1000
      16.4700   94.6400
      20.0900   94.5400
@@ -31,53 +31,53 @@ citys = [18.4700   95.1000
      16.4100   97.1300
      15.0900   92.5500];
  
-%% IV. ¼ÆËã¾àÀë¾ØÕó
-D = Distance(citys);                                        % ¼ÆËã¾àÀë¾ØÕó
-n = size(D, 1);                                             % ³ÇÊÐµÄ¸öÊý
+%% IV. è®¡ç®—è·ç¦»çŸ©é˜µ
+D = Distance(citys);                                        % è®¡ç®—è·ç¦»çŸ©é˜µ
+n = size(citys, 1);                                             % åŸŽå¸‚çš„ä¸ªæ•°
   
-%% V. ³õÊ¼»¯²ÎÊý
-NC_max = 200;                                               % ×î´óµü´ú´ÎÊý£¬È¡100~500Ö®¼ä
-m = 22;                                                     % ÂìÒÏµÄ¸öÊý£¬Ò»°ãÉèÎª³ÇÊÐÊýÁ¿µÄ1.5±¶
-alpha = 1;                                                  % ¦Á Ñ¡Ôñ[1, 4]±È½ÏºÏÊÊ
-beta = 4;                                                   % ¦Â Ñ¡Ôñ[3 4 5]±È½ÏºÏÊÊ
-rho = 0.2;                                                  % ¦Ñ Ñ¡Ôñ[0.1, 0.2, 0.5]±È½ÏºÏÊÊ
+%% V. åˆå§‹åŒ–å‚æ•°
+NC_max = 200;                                               % æœ€å¤§è¿­ä»£æ¬¡æ•°ï¼Œå–100~500ä¹‹é—´
+m = 22;                                                     % èš‚èšçš„ä¸ªæ•°ï¼Œä¸€èˆ¬è®¾ä¸ºåŸŽå¸‚æ•°é‡çš„1.5å€
+alpha = 1;                                                  % Î± é€‰æ‹©[1, 4]æ¯”è¾ƒåˆé€‚
+beta = 4;                                                   % Î² é€‰æ‹©[3 4 5]æ¯”è¾ƒåˆé€‚
+rho = 0.2;                                                  % Ï é€‰æ‹©[0.1, 0.2, 0.5]æ¯”è¾ƒåˆé€‚
 Q = 20;
-NC = 1;                                                     % µü´ú´ÎÊý£¬Ò»¿ªÊ¼Îª1
+NC = 1;                                                     % è¿­ä»£æ¬¡æ•°ï¼Œä¸€å¼€å§‹ä¸º1
  
-Eta = 1 ./ D;                                               % ¦Ç = 1 / D(i, j) ,ÕâÀïÊÇ¾ØÕó
-Tau = ones(n, n);                                           % Tau(i, j)±íÊ¾±ß(i, j)µÄÐÅÏ¢ËØÁ¿£¬Ò»¿ªÊ¼¶¼Îª1
-Table = zeros(m, n);                                        % Â·¾¶¼ÇÂ¼±í
+Eta = 1 ./ D;                                               % Î· = 1 / D(i, j) ,è¿™é‡Œæ˜¯çŸ©é˜µ
+Tau = ones(n, n);                                           % Tau(i, j)è¡¨ç¤ºè¾¹(i, j)çš„ä¿¡æ¯ç´ é‡ï¼Œä¸€å¼€å§‹éƒ½ä¸º1
+Table = zeros(m, n);                                        % è·¯å¾„è®°å½•è¡¨
  
-rBest = zeros(NC_max, n);                                   % ¼ÇÂ¼¸÷´úµÄ×î¼ÑÂ·Ïß
-lBest = inf .* ones(NC_max, 1);                             % ¼ÇÂ¼¸÷´úµÄ×î¼ÑÂ·ÏßµÄ×Ü³¤¶È
-lAverage = zeros(NC_max, 1);                                % ¼ÇÂ¼¸÷´úÂ·ÏßµÄÆ½¾ù³¤¶È
+rBest = zeros(NC_max, n);                                   % è®°å½•å„ä»£çš„æœ€ä½³è·¯çº¿
+lBest = inf .* ones(NC_max, 1);                             % è®°å½•å„ä»£çš„æœ€ä½³è·¯çº¿çš„æ€»é•¿åº¦
+lAverage = zeros(NC_max, 1);                                % è®°å½•å„ä»£è·¯çº¿çš„å¹³å‡é•¿åº¦
  
-%% VI. µü´úÑ°ÕÒ×î¼ÑÂ·¾¶
+%% VI. è¿­ä»£å¯»æ‰¾æœ€ä½³è·¯å¾„
 while NC <= NC_max
-    % µÚ1²½£ºËæ»ú²úÉú¸÷¸öÂìÒÏµÄÆðµã³ÇÊÐ
+    % ç¬¬1æ­¥ï¼šéšæœºäº§ç”Ÿå„ä¸ªèš‚èšçš„èµ·ç‚¹åŸŽå¸‚
     start = zeros(m, 1);
     for i = 1: m
         temp = randperm(n);
         start(i) = temp(1);
     end
-    Table(:, 1) = start;                                    % Tabu±íµÄµÚÒ»ÁÐ¼´ÊÇËùÓÐÂìÒÏµÄÆðµã³ÇÊÐ
-    citys_index = 1: n;                                     % ËùÓÐ³ÇÊÐË÷ÒýµÄÒ»¸ö¼¯ºÏ
-    % µÚ2²½£ºÖð¸öÂìÒÏÂ·¾¶Ñ¡Ôñ
+    Table(:, 1) = start;                                    % Tabuè¡¨çš„ç¬¬ä¸€åˆ—å³æ˜¯æ‰€æœ‰èš‚èšçš„èµ·ç‚¹åŸŽå¸‚
+    citys_index = 1: n;                                     % æ‰€æœ‰åŸŽå¸‚ç´¢å¼•çš„ä¸€ä¸ªé›†åˆ
+    % ç¬¬2æ­¥ï¼šé€ä¸ªèš‚èšè·¯å¾„é€‰æ‹©
     for i = 1: m
-        % Öð¸ö³ÇÊÐÂ·¾¶Ñ¡Ôñ
+        % é€ä¸ªåŸŽå¸‚è·¯å¾„é€‰æ‹©
         for j = 2: n
-            tabu = Table(i, 1: (j - 1));                    % ÂìÒÏiÒÑ¾­·ÃÎÊµÄ³ÇÊÐ¼¯ºÏ£¨³Æ½û¼É±í£©
+            tabu = Table(i, 1: (j - 1));                    % èš‚èšiå·²ç»è®¿é—®çš„åŸŽå¸‚é›†åˆï¼ˆç§°ç¦å¿Œè¡¨ï¼‰
             allow_index = ~ismember(citys_index, tabu);
-            Allow = citys_index(allow_index);               % Allow±í£º´æ·Å´ý·ÃÎÊµÄ³ÇÊÐ
+            Allow = citys_index(allow_index);               % Allowè¡¨ï¼šå­˜æ”¾å¾…è®¿é—®çš„åŸŽå¸‚ï¼ŒAllowæ¯æ¬¡æ•°é‡ä¼šå‡å°‘1
             P = Allow;
              
-            % ¼ÆËã´Ó³ÇÊÐjµ½Ê£ÏÂÎ´·ÃÎÊµÄ³ÇÊÐµÄ×ªÒÆ¸ÅÂÊ
-            for k = 1: size(Allow, 2)                       % ´ý·ÃÎÊµÄ³ÇÊÐÊýÁ¿
+            % è®¡ç®—ä»ŽåŸŽå¸‚jåˆ°å‰©ä¸‹æœªè®¿é—®çš„åŸŽå¸‚çš„è½¬ç§»æ¦‚çŽ‡
+            for k = 1: size(Allow, 2)                       % å¾…è®¿é—®çš„åŸŽå¸‚æ•°é‡
                 P(k) = Tau(tabu(end), Allow(k))^alpha * Eta(tabu(end), Allow(k))^beta;
             end
-            P = P / sum(P);                                 % ¹éÒ»»¯
+            P = P / sum(P);                                 % å½’ä¸€åŒ–
              
-            % ÂÖÅÌ¶Ä·¨Ñ¡ÔñÏÂÒ»¸ö·ÃÎÊ³ÇÊÐ£¨ÎªÁËÔö¼ÓËæ»úÐÔ£©
+            % è½®ç›˜èµŒæ³•é€‰æ‹©ä¸‹ä¸€ä¸ªè®¿é—®åŸŽå¸‚ï¼ˆä¸ºäº†å¢žåŠ éšæœºæ€§ï¼‰
             Pc = cumsum(P);
             target_index = find(Pc >= rand);
             target = Allow(target_index(1));
@@ -85,7 +85,7 @@ while NC <= NC_max
         end
     end
      
-    % µÚ3²½£º¼ÆËã¸÷¸öÂìÒÏµÄÂ·¾¶¾àÀë
+    % ç¬¬3æ­¥ï¼šè®¡ç®—å„ä¸ªèš‚èšçš„è·¯å¾„è·ç¦»
     length = zeros(m, 1);
     for i = 1: m
         Route = Table(i, :);
@@ -95,7 +95,7 @@ while NC <= NC_max
         length(i) = length(i) + D(Route(n), Route(1));
     end
      
-    % µÚ4²½£º¼ÆËã×î¶ÌÂ·¾¶¾àÀë¼°Æ½¾ù¾àÀë
+    % ç¬¬4æ­¥ï¼šè®¡ç®—æœ€çŸ­è·¯å¾„è·ç¦»åŠå¹³å‡è·ç¦»
     if NC == 1
         [min_Length, min_index] = min(length);
         lBest(NC) = min_Length;
@@ -111,7 +111,7 @@ while NC <= NC_max
             rBest(NC, :) = rBest((NC - 1), :);
         end
     end
-    % µÚ5²½£º¸üÐÂÐÅÏ¢ËØ
+    % ç¬¬5æ­¥ï¼šæ›´æ–°ä¿¡æ¯ç´ 
     Delta_tau = zeros(n, n);
     for i = 1: m         
         for j = 1: (n - 1)
@@ -121,17 +121,17 @@ while NC <= NC_max
     end
     Tau = (1 - rho) .* Tau + Delta_tau;
  
-    % µÚ6²½£ºµü´ú´ÎÊý¼Ó1£¬²¢ÇÒÇå¿ÕÂ·¾¶¼ÇÂ¼±í
+    % ç¬¬6æ­¥ï¼šè¿­ä»£æ¬¡æ•°åŠ 1ï¼Œå¹¶ä¸”æ¸…ç©ºè·¯å¾„è®°å½•è¡¨
     NC = NC + 1;
     Table = zeros(m, n);
 end
-%% VII. ½á¹ûÏÔÊ¾
+%% VII. ç»“æžœæ˜¾ç¤º
 [shortest_Length, shortest_index] = min(lBest);
 shortest_Route = rBest(shortest_index, :);
-disp(['×î¶Ì¾àÀë:' num2str(shortest_Length)]);
-disp(['×î¶ÌÂ·¾¶:' num2str([shortest_Route shortest_Route(1)])]);
+disp(['æœ€çŸ­è·ç¦»:' num2str(shortest_Length)]);
+disp(['æœ€çŸ­è·¯å¾„:' num2str([shortest_Route shortest_Route(1)])]);
  
-%% VIII. »æÍ¼
+%% VIII. ç»˜å›¾
 figure(1)
 plot([citys(shortest_Route,1); citys(shortest_Route(1),1)],...
      [citys(shortest_Route,2); citys(shortest_Route(1),2)],'o-');
@@ -139,14 +139,15 @@ grid on
 for i = 1: size(citys, 1)
     text(citys(i, 1), citys(i, 2), ['   ' num2str(i)]);
 end
-text(citys(shortest_Route(1), 1), citys(shortest_Route(1), 2), '       Æðµã');
-text(citys(shortest_Route(end), 1), citys(shortest_Route(end), 2), '       ÖÕµã');
-xlabel('³ÇÊÐÎ»ÖÃºá×ø±ê')
-ylabel('³ÇÊÐÎ»ÖÃ×Ý×ø±ê')
-title(['ÒÏÈºËã·¨ÓÅ»¯Â·¾¶(×î¶Ì¾àÀë: ' num2str(shortest_Length) ')'])
+text(citys(shortest_Route(1), 1), citys(shortest_Route(1), 2), '       èµ·ç‚¹');
+text(citys(shortest_Route(end), 1), citys(shortest_Route(end), 2), '       ç»ˆç‚¹');
+xlabel('åŸŽå¸‚ä½ç½®æ¨ªåæ ‡')
+ylabel('åŸŽå¸‚ä½ç½®çºµåæ ‡')
+title(['èšç¾¤ç®—æ³•ä¼˜åŒ–è·¯å¾„(æœ€çŸ­è·ç¦»: ' num2str(shortest_Length) ')'])
+% 
 figure(2)
 plot(1: NC_max, lBest, 'b', 1: NC_max, lAverage, 'r:')
-legend('×î¶Ì¾àÀë', 'Æ½¾ù¾àÀë')
-xlabel('µü´ú´ÎÊý')
-ylabel('¾àÀë')
-title('¸÷´ú×î¶Ì¾àÀëÓëÆ½¾ù¾àÀë¶Ô±È')
+legend('æœ€çŸ­è·ç¦»', 'å¹³å‡è·ç¦»')
+xlabel('è¿­ä»£æ¬¡æ•°')
+ylabel('è·ç¦»')
+title('å„ä»£æœ€çŸ­è·ç¦»ä¸Žå¹³å‡è·ç¦»å¯¹æ¯”')
